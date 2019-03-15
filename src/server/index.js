@@ -6,6 +6,7 @@ import App from "../shared/App";
 import React from "react";
 // serializing javascript so that we can pass data from the client to the server
 import serialize from "serialize-javascript";
+import { fetchPopularRepos } from "../shared/api";
 
 const app = express();
 
@@ -17,18 +18,18 @@ app.use(cors());
 app.use(express.static("public"));
 
 app.get("*", (req, res, next) => {
-  const name = "AppData";
-  const markup = renderToString(<App data={name} />);
+  fetchPopularRepos().then(data => {
+    const markup = renderToString(<App data={data} />);
 
-  // server the entire HTML document here including the script imports
-  // for the client side react application
-  res.send(`
+    // server the entire HTML document here including the script imports
+    // for the client side react application
+    res.send(`
     <!DOCTYPE html>
     <html>
       <head>
         <title>react-ssr-example</title>
         <script src="/bundle.js" defer></script>
-        <script>window.__INITIAL_DATA__ = ${serialize(name)}</script>
+        <script>window.__INITIAL_DATA__ = ${serialize(data)}</script>
       </head>
 
       <body>
@@ -36,6 +37,7 @@ app.get("*", (req, res, next) => {
       </body>
     </html>
   `);
+  });
 });
 
 app.listen(3000, () => {
