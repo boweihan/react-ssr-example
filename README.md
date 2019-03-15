@@ -9,3 +9,7 @@ Server Side Rendering / Isomorphic JavaScript / Universal JavaScript is the idea
 ### Concept
 
 Server sends HTML document to client, client gets to see pre-rendered HTML without having to wait for JavaScript execution on the client side.
+
+### Things to keep in mind
+
+1. Client and Server representation of React components must be identical because there is no guarantee that attribute differences will be patched.

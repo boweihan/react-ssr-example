@@ -15,7 +15,7 @@ app.use(cors());
 app.use(express.static("public"));
 
 app.get("*", (req, res, next) => {
-  const markup = renderToString(<App />);
+  const markup = renderToString(<App data="AppData" />);
 
   // server the entire HTML document here including the script imports
   // for the client side react application
