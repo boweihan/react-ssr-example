@@ -4,6 +4,8 @@ import cors from "cors";
 import { renderToString } from "react-dom/server";
 import App from "../shared/App";
 import React from "react";
+// serializing javascript so that we can pass data from the client to the server
+import serialize from "serialize-javascript";
 
 const app = express();
 
@@ -15,7 +17,8 @@ app.use(cors());
 app.use(express.static("public"));
 
 app.get("*", (req, res, next) => {
-  const markup = renderToString(<App data="AppData" />);
+  const name = "AppData";
+  const markup = renderToString(<App data={name} />);
 
   // server the entire HTML document here including the script imports
   // for the client side react application
@@ -25,6 +28,7 @@ app.get("*", (req, res, next) => {
       <head>
         <title>react-ssr-example</title>
         <script src="/bundle.js" defer></script>
+        <script>window.__INITIAL_DATA__ = ${serialize(name)}</script>
       </head>
 
       <body>
