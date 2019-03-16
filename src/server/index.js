@@ -7,7 +7,7 @@ import React from "react";
 // serializing javascript so that we can pass data from the client to the server
 import serialize from "serialize-javascript";
 import { fetchPopularRepos } from "../shared/api";
-import { matchPath } from "react-router-dom";
+import { StaticRouter, matchPath } from "react-router-dom";
 import routes from "../shared/routes";
 
 const app = express();
@@ -28,7 +28,11 @@ app.get("*", (req, res, next) => {
 
   promise
     .then(data => {
-      const markup = renderToString(<App data={data} />);
+      const markup = renderToString(
+        <StaticRouter location={req.url} context={{}}>
+          <App data={data} />
+        </StaticRouter>,
+      );
 
       res.send(`
      <!DOCTYPE html>
