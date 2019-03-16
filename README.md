@@ -13,3 +13,6 @@ Server sends HTML document to client, client gets to see pre-rendered HTML witho
 ### Things to keep in mind
 
 1. Client and Server representation of React components must be identical because there is no guarantee that attribute differences will be patched.
+2. Achieving parity of server/client side bundles can be challenging
+3. Error boundaries not supported on the server side
+4. React Lazy/Suspense not supported on server Side
